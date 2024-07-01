@@ -1,0 +1,22 @@
+import { Module } from '@nestjs/common';
+import { MailService } from './services/mail.service';
+import { MailController } from './controller/mail.controller';
+import { BullModule } from '@nestjs/bullmq';
+import { MailProcessor } from './services/mail.processor';
+
+@Module({
+  imports: [
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+    BullModule.registerQueue(
+      { name: 'mail-queue' },
+    )
+  ],
+  controllers: [MailController],
+  providers: [MailService, MailProcessor],
+})
+export class MailModule { }
