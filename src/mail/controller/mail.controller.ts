@@ -11,4 +11,13 @@ export class MailController {
     this.mailService.addJobsInBulk(body)
     return { message: 'Mail job added to the queue' };
   }
+
+  @Post('send')
+  async sendAmail(
+    @Body()
+    body: { serverName: string; to: string; subject: string; message: any },
+  ) {
+    this.mailService.addJob(body)
+    return { message: 'Mail job added to the queue' };
+  }
 }
